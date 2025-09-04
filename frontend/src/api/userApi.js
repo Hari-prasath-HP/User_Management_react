@@ -1,13 +1,13 @@
-import api from "./axios"
+import axios from "axios";
 
-export const getUsersApi = () => api.get("/users")
-export const getUserApi = (id) => api.get(`/users/${id}`)
-export const updateUserApi = (id,payload) => api.put(`/users/${id}`,payload)
-export const deleteUserApi = (id) => api.delete(`/users/${id}`);
-export const uploadProfileImageApi = (id, file) => {
-  const form = new FormData();
-  form.append("profileImage", file);
-  return api.put(`/users/${id}`, form, {
-    headers: { "Content-Type": "multipart/form-data" },
+const API_URL = "http://localhost:5000/api/users";
+const token = localStorage.getItem("token");
+
+export const updateProfileImage = async (file) => {
+  const formData = new FormData();
+  formData.append("profileImage", file);
+  const res = await axios.put(`${API_URL}/profile/image`, formData, {
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
   });
-}; 
+  return res.data;
+};
